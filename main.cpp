@@ -41,8 +41,8 @@ bool checkWinner() {
 
 bool checkTie() {
     bool tie = true;
-    for(int i = 0; i < 8; i++) {
-        if (caselle[i].squareType == '0') {
+    for(int i = 0; i < 9; i++) {
+        if (caselle[i].squareType == ' ') {
             return false;
         }
     }
@@ -57,9 +57,13 @@ void drawBoard() {
     cout << caselle[6].squareType << " | " << caselle[7].squareType << " | " << caselle[8].squareType << endl;
 }
 
+void clear() {
+    cout << "\x1B[2J\x1B[H";
+}
+
 int main() {
     for (int i = 0; i <= sizeof(caselle)/sizeof(caselle[0]); i++) {
-        caselle[i].squareType = '0';
+        caselle[i].squareType = ' ';
     }
 
     bool gameFinished = false;
@@ -69,24 +73,33 @@ int main() {
         int mossa;
         cout << "Inserisci il numero: ";
         cin >> mossa;
-        caselle[mossa].changeSquareType(turno);
-
-        gameFinished = checkWinner();
-        if (gameFinished) {
-            drawBoard();
-            cout << "Partita finita vittoria " << turno;
-            return 0;
-        }
-        gameFinished = checkTie();
-        if (gameFinished) {
-            cout << "Pareggio";
-            return 0;
-        }
-
-        if(turno == 'X') {
-            turno = 'O';
+        if((mossa < 0 || mossa > 8) || caselle[mossa].squareType != ' ') {
+            clear();
         } else {
-            turno = 'X';
+
+            caselle[mossa].changeSquareType(turno);
+
+            clear();
+
+            gameFinished = checkWinner();
+            if (gameFinished) {
+                drawBoard();
+                cout << "Partita finita vittoria " << turno;
+                return 0;
+            }
+
+            gameFinished = checkTie();
+            if (gameFinished) {
+                drawBoard();
+                cout << "Pareggio";
+                return 0;
+            }
+
+            if(turno == 'X') {
+                turno = 'O';
+            } else {
+                turno = 'X';
+            }
         }
     }
 
