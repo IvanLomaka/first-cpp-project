@@ -196,33 +196,30 @@ class Board {
                     clear();
                     cin.clear();
                     cin.ignore();
+                } else if((mossa < 0 || mossa > 8) || caselle[mossa] != ' ') {
+                        clear();
                 } else {
-                    if((mossa < 0 || mossa > 8) || caselle[mossa] != ' ') {
-                        clear();
-                    } else {
-                    
-                        caselle[mossa] = turno;
+                    caselle[mossa] = turno;
 
-                        clear();
+                    clear();
+
+                    checkEndGame();
+
+                    if(gameFinished) return 0;
+
+                    if(opponentBot) {
+                        (turno == 'X') ? turno = 'O': turno = 'X';
+
+                        int index = minimaxRoot();
+                        caselle[index] = turno;
 
                         checkEndGame();
 
                         if(gameFinished) return 0;
 
-                        if(opponentBot) {
-                            (turno == 'X') ? turno = 'O': turno = 'X';
-
-                            int index = minimaxRoot();
-                            caselle[index] = turno;
-
-                            checkEndGame();
-
-                            if(gameFinished) return 0;
-
-                            (turno == 'X') ? turno = 'O': turno = 'X';
-                        } else {
-                            (turno == 'X') ? turno = 'O': turno = 'X';
-                        }
+                        (turno == 'X') ? turno = 'O': turno = 'X';
+                    } else {
+                        (turno == 'X') ? turno = 'O': turno = 'X';
                     }
                 }
             }
